@@ -1,4 +1,4 @@
 #ifndef CONFIG
 #define CONFIG
-#define WINDOW_NAME "Testing Graphics!"
+#define WINDOW_NAME "Graphics Template"
 #endif
