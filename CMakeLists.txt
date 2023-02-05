@@ -3,15 +3,18 @@ project(graphics)
 
 set(CMAKE_CXX_STANDARD 17)
 
-set(IMGUIDIR ${PROJECT_SOURCE_DIR}/imgui)
+set(IMGUI_DIR ${PROJECT_SOURCE_DIR}/imgui)
+set(GLFW_DIR ${PROJECT_SOURCE_DIR}/glfw)
 
-link_directories(/opt/homebrew/lib)
+link_directories(${GLFW_DIR}/build/src)
 
-add_executable(phy_graphics src/main.cpp src/app.cpp imgui/imgui.cpp imgui/backends/imgui_impl_sdl.cpp imgui/backends/imgui_impl_opengl3.cpp imgui/imgui_draw.cpp imgui/imgui_tables.cpp imgui/imgui_widgets.cpp imgui/imgui_demo.cpp)
+set(SOURCES src/main.cpp src/app.cpp src/window/window.cpp src/context/context.h src/context/ImGuiContext.cpp src/context/ImGuiContext.h)
 
-target_link_libraries(phy_graphics SDL2)
-target_link_libraries(phy_graphics "-framework OpenGL")
+add_executable(phy_graphics ${SOURCES} imgui/imgui.cpp imgui/backends/imgui_impl_glfw.cpp imgui/backends/imgui_impl_opengl3.cpp imgui/imgui_draw.cpp imgui/imgui_tables.cpp imgui/imgui_widgets.cpp imgui/imgui_demo.cpp)
 
-target_include_directories(phy_graphics PRIVATE ${IMGUIDIR}/backends)
-target_include_directories(phy_graphics PRIVATE ${IMGUIDIR})
-target_include_directories(phy_graphics PRIVATE /opt/homebrew/include/SDL2)
+target_link_libraries(phy_graphics glfw3)
+target_link_libraries(phy_graphics "-framework OpenGL -framework Cocoa -framework IOkit")
+
+target_include_directories(phy_graphics PRIVATE ${IMGUI_DIR}/backends)
+target_include_directories(phy_graphics PRIVATE ${IMGUI_DIR})
+target_include_directories(phy_graphics PRIVATE ${GLFW_DIR}/include)
