@@ -1,7 +1,6 @@
-#include <memory>
-#include "app.h"
+#include "window.h"
 
 int main(){
-	std::unique_ptr<App> a = std::make_unique<App>();
-	a->run();
+    Window w;
+    w.run();
 }
