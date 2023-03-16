@@ -4,7 +4,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include <GLFW/glfw3.h>
+#include "GL/glew.h"
 
 class Shader {
 public:

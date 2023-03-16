@@ -6,7 +6,6 @@
  */
 
 #include "GL/glew.h"
-#include "GLFW/glfw3.h"
 #include "Shader.h"
 #include "macros.h"
 
@@ -20,7 +19,6 @@ namespace PhyG{
         ~RenderObject();
 
     public:
-        void Render();
         // Place inline simple bind/unbind calls.
         inline void UnbindVAO() { glBindVertexArray(0); }
         inline void UnbindVBO() { glBindBuffer(GL_ARRAY_BUFFER, 0); }
@@ -28,6 +26,8 @@ namespace PhyG{
         inline void BindVAO() { glBindVertexArray(vao); }
         inline void BindVBO() { glBindBuffer(GL_ARRAY_BUFFER, vbo); }
         inline void BindEBO() { glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo); }
+
+        void Render();
 
     private:
         Shader *s;

@@ -8,11 +8,11 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wdeprecated-declarations")
 set(SOURCES
         src/main.cpp
         src/window.cpp
-        src/MainMenuBar.cpp
         src/Shader.cpp
         src/RenderObject.cpp
         src/Cube.cpp
         src/menus/Settings.cpp
+        src/Triangle.cpp
 
         imgui/imgui.cpp
         imgui/imgui_draw.cpp
@@ -20,7 +20,7 @@ set(SOURCES
         imgui/imgui_widgets.cpp
         imgui/imgui_demo.cpp
         imgui/backends/imgui_impl_opengl3.cpp
-        imgui/backends/imgui_impl_glfw.cpp src/Cube.cpp src/Cube.h)
+        imgui/backends/imgui_impl_glfw.cpp)
 
 add_executable(phy_graphics ${SOURCES})
 
@@ -30,7 +30,6 @@ set(GLFW_DIR ${PROJECT_SOURCE_DIR}/glfw)
 set(GLEW_DIR ${PROJECT_SOURCE_DIR}/glew)
 
 target_link_directories(phy_graphics PRIVATE ${GLFW_DIR}/build/src)
-target_link_directories(phy_graphics PRIVATE ${GLEW_DIR}/lib)
 
 target_include_directories(phy_graphics PRIVATE ${IMGUI_DIR}/backends)
 target_include_directories(phy_graphics PRIVATE ${IMGUI_DIR})
@@ -39,7 +38,7 @@ target_include_directories(phy_graphics PRIVATE ${GLEW_DIR}/include)
 target_include_directories(phy_graphics PRIVATE ${PROJECT_SOURCE_DIR}/src/menus)
 
 target_link_libraries(phy_graphics PRIVATE glfw3)
-target_link_libraries(phy_graphics PRIVATE GLEW)
+target_link_libraries(phy_graphics PRIVATE ${PROJECT_SOURCE_DIR}/glew/lib/libGLEW.a)
 
 if (CMAKE_HOST_SYSTEM_NAME MATCHES "Linux")
     #Needs to be tested

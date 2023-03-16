@@ -8,7 +8,7 @@
 #define DEBUG
 
 #ifdef __APPLE__
-#define GLSL_VERSION "#version 150"
+#define GLSL_VERSION "#version 330"
 #else
 #define GLSL_VERSION "#version 140"
 #endif

@@ -7,13 +7,13 @@
 
 #include "RenderObject.h"
 #include "primatives.h"
-#include "GLFW/glfw3.h"
+#include "GL/glew.h"
 
 #define verts PhyG::Primatives::Cube::vertices
 #define indis PhyG::Primatives::Cube::indices
 
 namespace PhyG{
-    class Cube : RenderObject{
+    class Cube : public PhyG::RenderObject{
     public:
         Cube(std::string vertex_shader_location, std::string fragment_shader_location);
         ~Cube();

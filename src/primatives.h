@@ -1,7 +1,7 @@
 #ifndef PHY_GRAPHICS_PRIMATIVES_H
 #define PHY_GRAPHICS_PRIMATIVES_H
 
-#include "GLFW/glfw3.h"
+#include "GL/glew.h"
 
 namespace PhyG::Primatives::Cube{
     const GLfloat vertices[72] = {

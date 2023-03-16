@@ -30,11 +30,11 @@ Window::Window() {
         return;
     }
 
-    // Initialie after creating window
-    glewInit();
-
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);
+
+    // Initialize after creating window
+    glewInit();
 
     // ### IMGUI ###
     IMGUI_CHECKVERSION();
@@ -63,6 +63,8 @@ Window::~Window() {
 }
 
 void Window::run() {
+    c = new PhyG::Cube("../shaders/base.vert", "../shaders/base.frag");
+
     while(!glfwWindowShouldClose(window)){
 
         //### IMGUI ###
@@ -101,6 +103,8 @@ void Window::run() {
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
         // Graphics Render Loop here
+        c->Render();
+        c->UnbindVAO();
 
         glfwPollEvents();
         glfwSwapBuffers(window);
