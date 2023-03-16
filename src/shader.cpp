@@ -22,8 +22,12 @@ Shader::Shader( std::string vertex_path, std::string fragment_path ){
         std::cout << "SHADER READ ERROR: " << e.what() << std::endl;
     }
 
-    vertex_code = vStream.str().c_str();
-    fragment_code = fStream.str().c_str();
+    // This is stupid, or maybe just me
+    const std::string vertex_code_str = vStream.str();
+    const std::string fragment_code_str = fStream.str();
+
+    const char* vertex_code = vertex_code_str.c_str();
+    const char* fragment_code = fragment_code_str.c_str();
 
     // Compile the shaders
     unsigned int vertex, fragment;
@@ -35,15 +39,19 @@ Shader::Shader( std::string vertex_path, std::string fragment_path ){
     glCompileShader(vertex);
     glGetShaderiv(vertex, GL_COMPILE_STATUS, &success);
     if(!success){
+        glGetShaderInfoLog(vertex, 512, NULL, infoLog);
         std::cout << "There was a problem compiling the shader " << vertex_path << std::endl;
+        std::cout << infoLog << std::endl;
     }
 
-    fragment = glCreateShader(GL_FRAGMENT_SHADER);
+    fragment= glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(fragment, 1, &fragment_code, NULL);
     glCompileShader(fragment);
     glGetShaderiv(fragment, GL_COMPILE_STATUS, &success);
     if(!success){
+        glGetShaderInfoLog(vertex, 512, NULL, infoLog);
         std::cout << "There was a problem compiling the shader " << fragment_path << std::endl;
+        std::cout << infoLog << std::endl;
     }
 
     program_id = glCreateProgram();
@@ -53,11 +61,16 @@ Shader::Shader( std::string vertex_path, std::string fragment_path ){
     glGetProgramiv(program_id, GL_LINK_STATUS, &success);
     if(!success){
         glGetProgramInfoLog(program_id, 512, NULL, infoLog);
+        std::cout << "There was a problem linking the shader program!" << std::endl;
         std::cout << infoLog << std::endl;
     }
 
     glDeleteShader(vertex);
     glDeleteShader(fragment);
+}
+
+Shader::~Shader(){
+    glDeleteProgram(program_id);
 }
 
 void Shader::use(){

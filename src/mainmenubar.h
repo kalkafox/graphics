@@ -4,6 +4,8 @@
 #include "imgui.h"
 #include <iostream>
 
+#include "config.h"
+
 namespace PhyG{
     bool DrawMenuBar();
 }

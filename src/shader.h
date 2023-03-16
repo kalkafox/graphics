@@ -13,9 +13,7 @@ public:
     void use();
 
 private:
-    const char* vertex_code = "";
-    const char* fragment_code = "";
-    int program_id = -1;
+    int program_id;
 };
 
 

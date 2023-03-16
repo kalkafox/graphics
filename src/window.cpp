@@ -1,8 +1,7 @@
 #include "window.h"
 
-void render_views(){
+inline void render_views(){
     PhyG::DrawMenuBar();
-    PhyG::DrawSceneView();
 }
 
 static void glfw_error_callback(int error, const char *description) {
@@ -37,6 +36,7 @@ Window::Window() {
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO &io = ImGui::GetIO(); (void)io;
+    ImPlot::CreateContext();
 
 #ifdef DARK_COLORS
     ImGui::StyleColorsDark();
@@ -45,11 +45,14 @@ Window::Window() {
 #endif
 
     ImGui_ImplGlfw_InitForOpenGL(window, true);
-    ImGui_ImplOpenGL3_Init(GLSL_VERSION);
+    ImGui_ImplOpenGL3_Init("#version 410 core");
+
+    r = new PhyG::RenderObject();
 }
 Window::~Window() {
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
+    ImPlot::DestroyContext();
     ImGui::DestroyContext();
 
     glfwDestroyWindow(window);
@@ -58,24 +61,28 @@ Window::~Window() {
 
 void Window::run() {
     while(!glfwWindowShouldClose(window)){
-
         glfwPollEvents();
-
         // Start the Dear ImGui frame
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
+
         ImGui::NewFrame();
 
         render_views();
 
         // Rendering
         ImGui::Render();
+
         int display_w, display_h;
         glfwGetFramebufferSize(window, &display_w, &display_h);
         glViewport(0, 0, display_w, display_h);
         glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w);
         glClear(GL_COLOR_BUFFER_BIT);
+
+        r->Render();
+
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
 
         glfwSwapBuffers(window);
     }
