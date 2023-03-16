@@ -5,21 +5,12 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wdeprecated-declarations")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wdeprecated-declarations")
 
-# If you have these installed, you can instead just link against them.
-set(IMGUI_DIR ${PROJECT_SOURCE_DIR}/imgui)
-set(GLFW_DIR ${PROJECT_SOURCE_DIR}/glfw)
-set(IMPLOT_DIR ${PROJECT_SOURCE_DIR}/implot)
-set(GLEW_DIR ${PROJECT_SOURCE_DIR}/glew)
-
-# This can be overriden to prefer local install but I prefer just to build against a specific version.
-link_directories(${GLFW_DIR}/build/src)
-link_directories(${GLEW_DIR}/lib)
-
 set(SOURCES
         src/main.cpp
         src/window.cpp
         src/mainmenubar.cpp
         src/shader.cpp
+        src/RenderObject.cpp
 
         imgui/imgui.cpp
         imgui/imgui_draw.cpp
@@ -27,18 +18,36 @@ set(SOURCES
         imgui/imgui_widgets.cpp
         imgui/imgui_demo.cpp
         imgui/backends/imgui_impl_opengl3.cpp
-        imgui/backends/imgui_impl_glfw.cpp
-        src/RenderObject.cpp)
+        imgui/backends/imgui_impl_glfw.cpp)
 
 add_executable(phy_graphics ${SOURCES})
 
-#macOS only right now (maybe always?)
-target_link_libraries(phy_graphics glfw3)
-target_link_libraries(phy_graphics GLEW)
-target_link_libraries(phy_graphics "-framework OpenGL -framework Cocoa -framework IOkit")
+# If you have these installed, you can instead just link against them instead.
+set(IMGUI_DIR ${PROJECT_SOURCE_DIR}/imgui)
+set(GLFW_DIR ${PROJECT_SOURCE_DIR}/glfw)
+#set(IMPLOT_DIR ${PROJECT_SOURCE_DIR}/implot)
+set(GLEW_DIR ${PROJECT_SOURCE_DIR}/glew)
 
-target_include_directories(phy_graphics PRIVATE ${IMPLOT_DIR})
+target_link_directories(phy_graphics PRIVATE ${GLFW_DIR}/build/src)
+target_link_directories(phy_graphics PRIVATE ${GLEW_DIR}/lib)
+
+#target_include_directories(phy_graphics PRIVATE ${IMPLOT_DIR})
 target_include_directories(phy_graphics PRIVATE ${IMGUI_DIR}/backends)
 target_include_directories(phy_graphics PRIVATE ${IMGUI_DIR})
 target_include_directories(phy_graphics PRIVATE ${GLFW_DIR}/include)
 target_include_directories(phy_graphics PRIVATE ${GLEW_DIR}/include)
+
+target_link_libraries(phy_graphics PRIVATE glfw3)
+target_link_libraries(phy_graphics PRIVATE GLEW)
+
+if (CMAKE_HOST_SYSTEM_NAME MATCHES "Linux")
+    #Needs to be tested
+    target_link_libraries(phy_graphics PRIVATE GL)
+elseif (CMAKE_HOST_SYSTEM_NAME MATCHES "Darwin")
+    target_link_libraries(phy_graphics PRIVATE "-framework OpenGL -framework Cocoa -framework IOkit")
+elseif (CMAKE_HOST_SYSTEM_NAME MATCHES "Windows")
+    #Needs to be tested
+    target_link_libraries(phi_graphics PRIVATE opengl32)
+else ()
+    message(WARNING "Unsupported system: ${CMAKE_HOST_SYSTEM_NAME}")
+endif ()
