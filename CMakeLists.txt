@@ -27,13 +27,11 @@ add_executable(phy_graphics ${SOURCES})
 # You should also build these yourself first :>
 set(IMGUI_DIR ${PROJECT_SOURCE_DIR}/imgui)
 set(GLFW_DIR ${PROJECT_SOURCE_DIR}/glfw)
-#set(IMPLOT_DIR ${PROJECT_SOURCE_DIR}/implot)
 set(GLEW_DIR ${PROJECT_SOURCE_DIR}/glew)
 
 target_link_directories(phy_graphics PRIVATE ${GLFW_DIR}/build/src)
 target_link_directories(phy_graphics PRIVATE ${GLEW_DIR}/lib)
 
-#target_include_directories(phy_graphics PRIVATE ${IMPLOT_DIR})
 target_include_directories(phy_graphics PRIVATE ${IMGUI_DIR}/backends)
 target_include_directories(phy_graphics PRIVATE ${IMGUI_DIR})
 target_include_directories(phy_graphics PRIVATE ${GLFW_DIR}/include)
