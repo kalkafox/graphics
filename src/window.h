@@ -2,7 +2,7 @@
 #define PHY_GRAPHICS_WINDOW_H
 #include "config.h"
 
-#include "mainmenubar.h"
+#include "MainMenuBar.h"
 #include "RenderObject.h"
 
 #include "imgui.h"
@@ -12,6 +12,7 @@
 #include "GLFW/glfw3.h"
 
 #include <stdio.h>
+#include "Settings.h"
 
 class Window{
 public:
@@ -21,6 +22,6 @@ public:
 private:
     GLFWwindow *window;
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
-    PhyG::RenderObject *r;
+    bool show_settings = false;
 };
 #endif

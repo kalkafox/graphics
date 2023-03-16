@@ -1,24 +1,29 @@
 #include "RenderObject.h"
 
-PhyG::RenderObject::RenderObject() {
+PhyG::RenderObject::RenderObject(std::string vertex_shader_location, std::string fragment_shader_location) {
     s = new Shader(vertex_shader_location, fragment_shader_location);
 
-    GLenum error = glGetError();
-    if (error != GL_NO_ERROR) {
-        // handle error: glBindBuffer failed
-        std::cout << glewGetErrorString(error) << std::endl;
-    }
     glGenVertexArrays(1, &vao);
     glGenBuffers(1, &vbo);
+    glGenBuffers(1, &ebo);
     glBindVertexArray(vao);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(attribute_arr), attribute_arr, GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 3*sizeof(GL_FLOAT), (void*)0);
-    glEnableVertexAttribArray(0);
+    GL_ERROR_CHECK();
+}
 
-    glBindVertexArray(0);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
+PhyG::RenderObject::RenderObject() {
+    s = new Shader("../shaders/base.vert", "../shaders/base.frag");
+
+    glGenVertexArrays(1, &vao);
+    glGenBuffers(1, &vbo);
+    glGenBuffers(1, &ebo);
+    glBindVertexArray(vao);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+
+    GL_ERROR_CHECK();
 }
 
 PhyG::RenderObject::~RenderObject() {
@@ -28,6 +33,4 @@ PhyG::RenderObject::~RenderObject() {
 void PhyG::RenderObject::Render() {
     s->use();
     glBindVertexArray(vao);
-    glDrawArrays(GL_TRIANGLES, 0, 4);
-    glBindVertexArray(0);
 }

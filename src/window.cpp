@@ -1,19 +1,19 @@
 #include "window.h"
 
-inline void render_views(){
-    PhyG::DrawMenuBar();
-}
-
 static void glfw_error_callback(int error, const char *description) {
-    fprintf(stderr, "GLFW Error %d: %s\n", error, description);
+    //fprintf(stderr, "GLFW Error %d: %s\n", error, description);
+    // Use STD instead.
+    std::cerr << "GLFW Error: " << error << ": " << description << std::endl;
 }
 
 Window::Window() {
     glfwSetErrorCallback(glfw_error_callback);
     if (!glfwInit()) {
         fprintf(stderr, "GLFW was unable to initalize...");
+        std::cerr << "GLFW Error: GLFW was unable to initialize.. " <<  std::endl;
         return;
     }
+
 #ifdef __APPLE__
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
@@ -30,10 +30,13 @@ Window::Window() {
         return;
     }
 
-    glfwMakeContextCurrent(window);
-    glfwSwapInterval(1);
+    // Initialie after creating window
     glewInit();
 
+    glfwMakeContextCurrent(window);
+    glfwSwapInterval(1);
+
+    // ### IMGUI ###
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO &io = ImGui::GetIO(); (void)io;
@@ -45,14 +48,15 @@ Window::Window() {
 #endif
 
     ImGui_ImplGlfw_InitForOpenGL(window, true);
-    ImGui_ImplOpenGL3_Init("#version 150 core");
-
-    r = new PhyG::RenderObject();
+    ImGui_ImplOpenGL3_Init(GLSL_VERSION);
+    //#############
 }
 Window::~Window() {
+    // ### IMGUI ###
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
+    //#############
 
     glfwDestroyWindow(window);
     glfwTerminate();
@@ -60,29 +64,45 @@ Window::~Window() {
 
 void Window::run() {
     while(!glfwWindowShouldClose(window)){
-        glfwPollEvents();
-        // Start the Dear ImGui frame
+
+        //### IMGUI ###
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
 
         ImGui::NewFrame();
 
-        render_views();
+        if(ImGui::BeginMainMenuBar()){
+            if(ImGui::BeginMenu("Graphics")){
+                ImGui::MenuItem("Settings", NULL, &show_settings);
+                ImGui::EndMenu();
+            }
+            ImGui::EndMainMenuBar();
+        }
 
-        // Rendering
+        if (show_settings){
+            PhyG::Menu::Settings(&show_settings, &clear_color);
+        }
+
+        // Views should be called here
+
+        //////
+
         ImGui::Render();
+        //#############
 
+        // Adjust the viewport for window resizing
         int display_w, display_h;
         glfwGetFramebufferSize(window, &display_w, &display_h);
         glViewport(0, 0, display_w, display_h);
         glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        r->Render();
-
+        // Render for IMGUI
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
+        // Graphics Render Loop here
 
+        glfwPollEvents();
         glfwSwapBuffers(window);
     }
 }

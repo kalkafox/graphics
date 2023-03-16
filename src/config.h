@@ -1,7 +1,7 @@
 #ifndef CONFIG
 #define CONFIG
 
-#define WINDOW_NAME "Graphics Template"
+#define WINDOW_NAME "Graphics"
 #define WINDOW_HEIGHT 1024
 #define WINDOW_WIDTH 800
 #define DARK_COLORS

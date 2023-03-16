@@ -8,9 +8,11 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wdeprecated-declarations")
 set(SOURCES
         src/main.cpp
         src/window.cpp
-        src/mainmenubar.cpp
-        src/shader.cpp
+        src/MainMenuBar.cpp
+        src/Shader.cpp
         src/RenderObject.cpp
+        src/Cube.cpp
+        src/menus/Settings.cpp
 
         imgui/imgui.cpp
         imgui/imgui_draw.cpp
@@ -18,11 +20,11 @@ set(SOURCES
         imgui/imgui_widgets.cpp
         imgui/imgui_demo.cpp
         imgui/backends/imgui_impl_opengl3.cpp
-        imgui/backends/imgui_impl_glfw.cpp)
+        imgui/backends/imgui_impl_glfw.cpp src/Cube.cpp src/Cube.h)
 
 add_executable(phy_graphics ${SOURCES})
 
-# If you have these installed, you can instead just link against them instead.
+# You should also build these yourself first :>
 set(IMGUI_DIR ${PROJECT_SOURCE_DIR}/imgui)
 set(GLFW_DIR ${PROJECT_SOURCE_DIR}/glfw)
 #set(IMPLOT_DIR ${PROJECT_SOURCE_DIR}/implot)
@@ -36,6 +38,7 @@ target_include_directories(phy_graphics PRIVATE ${IMGUI_DIR}/backends)
 target_include_directories(phy_graphics PRIVATE ${IMGUI_DIR})
 target_include_directories(phy_graphics PRIVATE ${GLFW_DIR}/include)
 target_include_directories(phy_graphics PRIVATE ${GLEW_DIR}/include)
+target_include_directories(phy_graphics PRIVATE ${PROJECT_SOURCE_DIR}/src/menus)
 
 target_link_libraries(phy_graphics PRIVATE glfw3)
 target_link_libraries(phy_graphics PRIVATE GLEW)
