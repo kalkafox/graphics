@@ -9,20 +9,17 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wdeprecated-declarations")
 set(IMGUI_DIR ${PROJECT_SOURCE_DIR}/imgui)
 set(GLFW_DIR ${PROJECT_SOURCE_DIR}/glfw)
 set(IMPLOT_DIR ${PROJECT_SOURCE_DIR}/implot)
+set(GLEW_DIR ${PROJECT_SOURCE_DIR}/glew)
 
 # This can be overriden to prefer local install but I prefer just to build against a specific version.
 link_directories(${GLFW_DIR}/build/src)
+link_directories(${GLEW_DIR}/lib)
 
 set(SOURCES
         src/main.cpp
         src/window.cpp
         src/mainmenubar.cpp
         src/shader.cpp
-        shapes/triangle.cpp
-
-        implot/implot.cpp
-        implot/implot_items.cpp
-        implot/implot_demo.cpp
 
         imgui/imgui.cpp
         imgui/imgui_draw.cpp
@@ -30,15 +27,18 @@ set(SOURCES
         imgui/imgui_widgets.cpp
         imgui/imgui_demo.cpp
         imgui/backends/imgui_impl_opengl3.cpp
-        imgui/backends/imgui_impl_glfw.cpp src/RenderObject.cpp src/RenderObject.h)
+        imgui/backends/imgui_impl_glfw.cpp
+        src/RenderObject.cpp)
 
 add_executable(phy_graphics ${SOURCES})
 
 #macOS only right now (maybe always?)
 target_link_libraries(phy_graphics glfw3)
+target_link_libraries(phy_graphics GLEW)
 target_link_libraries(phy_graphics "-framework OpenGL -framework Cocoa -framework IOkit")
 
 target_include_directories(phy_graphics PRIVATE ${IMPLOT_DIR})
 target_include_directories(phy_graphics PRIVATE ${IMGUI_DIR}/backends)
 target_include_directories(phy_graphics PRIVATE ${IMGUI_DIR})
 target_include_directories(phy_graphics PRIVATE ${GLFW_DIR}/include)
+target_include_directories(phy_graphics PRIVATE ${GLEW_DIR}/include)

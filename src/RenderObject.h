@@ -1,8 +1,9 @@
 #ifndef PHY_GRAPHICS_RENDEROBJECT_H
 #define PHY_GRAPHICS_RENDEROBJECT_H
 
-#include "shader.h"
+#include "GL/glew.h"
 #include "GLFW/glfw3.h"
+#include "shader.h"
 
 namespace PhyG{
     class RenderObject {
@@ -16,12 +17,13 @@ namespace PhyG{
         std::string fragment_shader_location = "../shaders/base.frag";
         Shader *s;
         const double attribute_arr[12] = {
-            1.0, 1.0, -1.0, 1.0, -1.0, -1.0,
-            -1.0, -1.0, 1.0, -1.0, 1.0, 1.0
+                1.0, 1.0, 1.0,
+                -1.0, 1.0, 1.0,
+                -1.0, -1.0, 1.0,
+                1.0, -1.0, 1.0
         };
-
-        unsigned int vbo;
         unsigned int vao;
+        unsigned int vbo;
     };
 }
 

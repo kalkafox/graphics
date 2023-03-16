@@ -32,11 +32,11 @@ Window::Window() {
 
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);
+    glewInit();
 
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO &io = ImGui::GetIO(); (void)io;
-    ImPlot::CreateContext();
 
 #ifdef DARK_COLORS
     ImGui::StyleColorsDark();
@@ -45,14 +45,13 @@ Window::Window() {
 #endif
 
     ImGui_ImplGlfw_InitForOpenGL(window, true);
-    ImGui_ImplOpenGL3_Init("#version 410 core");
+    ImGui_ImplOpenGL3_Init("#version 150 core");
 
     r = new PhyG::RenderObject();
 }
 Window::~Window() {
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
-    ImPlot::DestroyContext();
     ImGui::DestroyContext();
 
     glfwDestroyWindow(window);
