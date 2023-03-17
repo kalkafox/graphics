@@ -4,7 +4,8 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
-#include "GL/glew.h"
+//#include "GL/glew.h"
+#include "glad/glad.h"
 
 class Shader {
 public:

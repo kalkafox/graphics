@@ -10,7 +10,6 @@ PhyG::RenderObject::RenderObject(std::string vertex_shader_location, std::string
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
 
-    GL_ERROR_CHECK();
 }
 
 PhyG::RenderObject::RenderObject() {
@@ -22,8 +21,6 @@ PhyG::RenderObject::RenderObject() {
     glBindVertexArray(vao);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo);
-
-    GL_ERROR_CHECK();
 }
 
 PhyG::RenderObject::~RenderObject() {

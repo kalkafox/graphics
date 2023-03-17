@@ -7,8 +7,6 @@ PhyG::Cube::Cube(std::string vertex_shader_location, std::string fragment_shader
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3*sizeof(GL_FLOAT), (void*)0);
     glEnableVertexAttribArray(0);
 
-    GL_ERROR_CHECK();
-
     glBindVertexArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }

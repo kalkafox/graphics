@@ -34,7 +34,10 @@ Window::Window() {
     glfwSwapInterval(1);
 
     // Initialize after creating window
-    glewInit();
+    int v = gladLoadGL();
+    if(v == 0){
+        std::cerr << "There was a problem initializing GL through glad!" << std::endl;
+    }
 
     // ### IMGUI ###
     IMGUI_CHECKVERSION();
@@ -98,6 +101,8 @@ void Window::run() {
         glViewport(0, 0, display_w, display_h);
         glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w);
         glClear(GL_COLOR_BUFFER_BIT);
+
+        glad_glGetError();
 
         // Render for IMGUI
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

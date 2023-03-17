@@ -7,7 +7,8 @@
 
 #include "RenderObject.h"
 #include "primatives.h"
-#include "GL/glew.h"
+//#include "GL/glew.h"
+#include "glad/glad.h"
 
 #define verts PhyG::Primatives::Cube::vertices
 #define indis PhyG::Primatives::Cube::indices

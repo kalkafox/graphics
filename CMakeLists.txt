@@ -14,6 +14,8 @@ set(SOURCES
         src/menus/Settings.cpp
         src/Triangle.cpp
 
+        glad/src/glad.c
+
         imgui/imgui.cpp
         imgui/imgui_draw.cpp
         imgui/imgui_tables.cpp
@@ -27,18 +29,17 @@ add_executable(phy_graphics ${SOURCES})
 # You should also build these yourself first :>
 set(IMGUI_DIR ${PROJECT_SOURCE_DIR}/imgui)
 set(GLFW_DIR ${PROJECT_SOURCE_DIR}/glfw)
-set(GLEW_DIR ${PROJECT_SOURCE_DIR}/glew)
+set(GLAD_DIR ${PROJECT_SOURCE_DIR}/glad)
 
 target_link_directories(phy_graphics PRIVATE ${GLFW_DIR}/build/src)
 
 target_include_directories(phy_graphics PRIVATE ${IMGUI_DIR}/backends)
 target_include_directories(phy_graphics PRIVATE ${IMGUI_DIR})
 target_include_directories(phy_graphics PRIVATE ${GLFW_DIR}/include)
-target_include_directories(phy_graphics PRIVATE ${GLEW_DIR}/include)
+target_include_directories(phy_graphics PRIVATE ${GLAD_DIR}/include)
 target_include_directories(phy_graphics PRIVATE ${PROJECT_SOURCE_DIR}/src/menus)
 
 target_link_libraries(phy_graphics PRIVATE glfw3)
-target_link_libraries(phy_graphics PRIVATE ${PROJECT_SOURCE_DIR}/glew/lib/libGLEW.a)
 
 if (CMAKE_HOST_SYSTEM_NAME MATCHES "Linux")
     #Needs to be tested

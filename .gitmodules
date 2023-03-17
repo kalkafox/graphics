@@ -2,9 +2,6 @@
 	path = imgui
 	url = https://github.com/ocornut/imgui
 	branch = f3f6295d532b98e322691afb8ef418209d963786
-[submodule "glew"]
-	path = glew
-	url = https://github.com/nigels-com/glew
 [submodule "glfw"]
 	path = glfw
 	url = https://github.com/glfw/glfw

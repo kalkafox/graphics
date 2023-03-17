@@ -5,9 +5,9 @@
  * PhyG::RenderObject abstracts away some usual calls to openGL that have to happen for every basic object.
  */
 
-#include "GL/glew.h"
+//#include "GL/glew.h"
+#include "glad/glad.h"
 #include "Shader.h"
-#include "macros.h"
 
 namespace PhyG{
     class RenderObject {
