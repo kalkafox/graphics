@@ -15,8 +15,10 @@ namespace PhyG{
         RenderObject(std::string vertex_shader_location, std::string fragment_shader_location);
         // Render object should have a base shader just in case one was not provided for some reason..
         RenderObject();
-
         ~RenderObject();
+
+        void UseShader();
+        void Render();
 
     public:
         // Place inline simple bind/unbind calls.
@@ -26,8 +28,6 @@ namespace PhyG{
         inline void BindVAO() { glBindVertexArray(vao); }
         inline void BindVBO() { glBindBuffer(GL_ARRAY_BUFFER, vbo); }
         inline void BindEBO() { glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo); }
-
-        void Render();
 
     private:
         Shader *s;

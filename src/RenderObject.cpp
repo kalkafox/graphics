@@ -28,6 +28,10 @@ PhyG::RenderObject::~RenderObject() {
 }
 
 void PhyG::RenderObject::Render() {
+    UseShader();
+    BindVAO();
+}
+
+void PhyG::RenderObject::UseShader() {
     s->use();
-    glBindVertexArray(vao);
 }

@@ -2,7 +2,7 @@
 #define PHY_GRAPHICS_WINDOW_H
 
 #include "config.h"
-#include "Cube.h"
+#include "Triangle.h"
 
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
@@ -24,6 +24,6 @@ private:
     GLFWwindow *window;
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
     bool show_settings = false;
-    PhyG::Cube *c;
+    PhyG::Triangle *c;
 };
 #endif

@@ -19,14 +19,14 @@ Window::Window() {
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-#elif
+#else
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
 #endif
 
     window = glfwCreateWindow(WINDOW_HEIGHT, WINDOW_WIDTH, WINDOW_NAME, NULL, NULL);
     if (window == NULL){
-        fprintf(stderr, "We couldn't create the window!");
+        std::cerr << "We couldn't create the window!" <<  std::endl;
         return;
     }
 
@@ -66,7 +66,7 @@ Window::~Window() {
 }
 
 void Window::run() {
-    c = new PhyG::Cube("../shaders/base.vert", "../shaders/base.frag");
+    c = new PhyG::Triangle("../shaders/base.vert", "../shaders/base.frag");
 
     while(!glfwWindowShouldClose(window)){
 
@@ -102,14 +102,11 @@ void Window::run() {
         glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        glad_glGetError();
+        // Graphics Render Loop here
+        c->Render();
 
         // Render for IMGUI
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-        // Graphics Render Loop here
-        c->Render();
-        c->UnbindVAO();
 
         glfwPollEvents();
         glfwSwapBuffers(window);

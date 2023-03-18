@@ -6,12 +6,12 @@
 #define PHY_GRAPHICS_CUBE_H
 
 #include "RenderObject.h"
-#include "primatives.h"
+#include "primitives.h"
 //#include "GL/glew.h"
 #include "glad/glad.h"
 
-#define verts PhyG::Primatives::Cube::vertices
-#define indis PhyG::Primatives::Cube::indices
+#define verts PhyG::Primitives::Cube::vertices
+#define indis PhyG::Primitives::Cube::indices
 
 namespace PhyG{
     class Cube : public PhyG::RenderObject{
