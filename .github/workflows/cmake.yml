@@ -21,6 +21,12 @@ jobs:
       - name: Setup Ninja
         uses: seanmiddleditch/gha-setup-ninja@master
 
+      - name: Build GLFW
+        working-directory: ${{github.workspace}}/glfw
+        run: |
+          cmake -B ${{github.workspace}}/glfw/build -G Ninja -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+          cmake --build ${{github.workspace}}/glfw/build --config ${{env.BUILD_TYPE}}
+
       - name: Configure CMake
         run: cmake -B ${{github.workspace}}/build -G Ninja -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
 
@@ -39,16 +45,17 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Install Homebrew
+      - name: Download Ninja
         run: |
-          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-          echo "PATH=/usr/local/bin:$PATH" >> $GITHUB_ENV
+          curl -L https://github.com/ninja-build/ninja/releases/download/v1.11.1/ninja-mac.zip -o ninja-mac.zip
+          unzip ninja-mac.zip
+          mv ninja /usr/local/bin
 
-      - name: Use CMake from brew
-        run: brew install cmake
-
-      - name: Setup Ninja
-        uses: seanmiddleditch/gha-setup-ninja@master
+      - name: Build GLFW
+        working-directory: ${{github.workspace}}/glfw
+        run: |
+          cmake -B ${{github.workspace}}/glfw/build -G Ninja -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+          cmake --build ${{github.workspace}}/glfw/build --config ${{env.BUILD_TYPE}}
 
       - name: Configure CMake
         run: cmake -B ${{github.workspace}}/build -G Ninja -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
