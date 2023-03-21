@@ -69,3 +69,32 @@ jobs:
       - name: Test
         working-directory: ${{github.workspace}}/build
         run: ctest -C ${{env.BUILD_TYPE}}
+
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
+      - name: Download Ninja
+        run: |
+          curl -L https://github.com/ninja-build/ninja/releases/download/v1.11.1/ninja-win.zip -o ninja-win.zip
+          Expand-Archive ninja-win.zip -DestinationPath ${{github.workspace}}/ninja
+
+      - name: Build GLFW
+        working-directory: ${{github.workspace}}/glfw
+        run: |
+          cmake -B ${{github.workspace}}/glfw/build -G "Ninja" -A x64 -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+          cmake --build ${{github.workspace}}/glfw/build --config ${{env.BUILD_TYPE}}
+
+      - name: Configure CMake
+        run: cmake -B ${{github.workspace}}/build -G "Ninja" -A x64 -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+
+      - name: Build
+        run: ninja\ninja.exe -C ${{github.workspace}}/build -v
+
+      - name: Test
+        working-directory: ${{github.workspace}}/build
+        run: ctest -C ${{env.BUILD_TYPE}}
