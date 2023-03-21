@@ -18,6 +18,9 @@ jobs:
         with:
           submodules: recursive
 
+      - name: Install dependencies
+        run: sudo apt-get install -y libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libgl1-mesa-dev libglu1-mesa-dev
+
       - name: Setup Ninja
         uses: seanmiddleditch/gha-setup-ninja@master
 
