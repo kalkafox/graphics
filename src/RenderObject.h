@@ -7,6 +7,7 @@
 
 #include "glad/glad.h"
 #include "Shader.h"
+#include <memory>
 
 namespace PhyG{
     class RenderObject {
