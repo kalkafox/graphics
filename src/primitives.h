@@ -53,14 +53,6 @@ namespace PhyG::Primitives{
                 20, 21, 22, 20, 22, 23  // Left face
         };
     }
-
-    namespace Triangle{
-        const GLfloat vertices[] = {
-                0.0f,  0.5f,  0.0f,
-                0.5f, -0.5f,  0.0f,
-                -0.5f, -0.5f,  0.0f
-        };
-    }
 }
 
 #endif //PHY_GRAPHICS_PRIMITIVES_H

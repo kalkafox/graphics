@@ -73,6 +73,13 @@ Shader::~Shader(){
     glDeleteProgram(program_id);
 }
 
-void Shader::use(){
+void Shader::Use(){
     glUseProgram(program_id);
+}
+
+void Shader::SetUniform4f(std::string name, GLfloat v1, GLfloat v2, GLfloat v3, GLfloat v4) {
+    GLuint attrib = glGetUniformLocation(program_id, name.c_str());
+    Use();
+    // GLint location, GLfloat v0, GLfloat v1, GLfloat v2, GLfloat v3
+    glUniform4f(attrib, v1, v2, v3, v4);
 }

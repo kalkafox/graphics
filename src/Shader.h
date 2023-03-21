@@ -11,7 +11,8 @@ class Shader {
 public:
     Shader( std::string vertex_path, std::string fragment_path );
     ~Shader();
-    void use();
+    void Use();
+    void SetUniform4f(std::string name, GLfloat v1, GLfloat v2, GLfloat v3, GLfloat v4 );
 
 private:
     int program_id;

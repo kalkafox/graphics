@@ -9,7 +9,7 @@ static void glfw_error_callback(int error, const char *description) {
 Window::Window() {
     glfwSetErrorCallback(glfw_error_callback);
     if (!glfwInit()) {
-        fprintf(stderr, "GLFW was unable to initalize...");
+        //fprintf(stderr, "GLFW was unable to initalize...");
         std::cerr << "GLFW Error: GLFW was unable to initialize.. " <<  std::endl;
         return;
     }
@@ -54,6 +54,7 @@ Window::Window() {
     ImGui_ImplOpenGL3_Init(GLSL_VERSION);
     //#############
 }
+
 Window::~Window() {
     // ### IMGUI ###
     ImGui_ImplOpenGL3_Shutdown();
@@ -66,7 +67,7 @@ Window::~Window() {
 }
 
 void Window::run() {
-    c = new PhyG::Triangle("../shaders/base.vert", "../shaders/base.frag");
+    t = std::make_unique<PhyG::Triangle>("../shaders/base.vert", "../shaders/base.frag");
 
     while(!glfwWindowShouldClose(window)){
 
@@ -79,6 +80,7 @@ void Window::run() {
         if(ImGui::BeginMainMenuBar()){
             if(ImGui::BeginMenu("Graphics")){
                 ImGui::MenuItem("Settings", NULL, &show_settings);
+                ImGui::MenuItem("Demo Menu", NULL, &show_demo);
                 ImGui::EndMenu();
             }
             ImGui::EndMainMenuBar();
@@ -88,8 +90,12 @@ void Window::run() {
             PhyG::Menu::Settings(&show_settings, &clear_color);
         }
 
-        // Views should be called here
+        if(show_demo){
+            ImGui::ShowDemoWindow();
+        }
 
+        // Views should be called here
+        t->RenderMenus();
         //////
 
         ImGui::Render();
@@ -103,7 +109,7 @@ void Window::run() {
         glClear(GL_COLOR_BUFFER_BIT);
 
         // Graphics Render Loop here
-        c->Render();
+        t->Render();
 
         // Render for IMGUI
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

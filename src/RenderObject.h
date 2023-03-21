@@ -5,7 +5,6 @@
  * PhyG::RenderObject abstracts away some usual calls to openGL that have to happen for every basic object.
  */
 
-//#include "GL/glew.h"
 #include "glad/glad.h"
 #include "Shader.h"
 
@@ -16,12 +15,13 @@ namespace PhyG{
         // Render object should have a base shader just in case one was not provided for some reason..
         RenderObject();
         ~RenderObject();
-
-        void UseShader();
         void Render();
+
+        std::unique_ptr<Shader> s;
 
     public:
         // Place inline simple bind/unbind calls.
+        inline void UseShader() { s->Use(); }
         inline void UnbindVAO() { glBindVertexArray(0); }
         inline void UnbindVBO() { glBindBuffer(GL_ARRAY_BUFFER, 0); }
         inline void UnbindEBO() { glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0); }
@@ -30,7 +30,6 @@ namespace PhyG{
         inline void BindEBO() { glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo); }
 
     private:
-        Shader *s;
         GLuint vao;
         GLuint vbo;
         GLuint ebo;

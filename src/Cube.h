@@ -18,6 +18,7 @@ namespace PhyG{
     public:
         Cube(std::string vertex_shader_location, std::string fragment_shader_location);
         ~Cube();
+        void Render();
     };
 }
 
