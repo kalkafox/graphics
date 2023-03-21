@@ -19,22 +19,25 @@ jobs:
           submodules: recursive
 
       - name: Install dependencies
-        run: sudo apt-get install -y libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libgl1-mesa-dev libglu1-mesa-dev
+        run: sudo apt-get install -y libx11-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev libgl1-mesa-dev libglu1-mesa-dev unzip
 
-      - name: Setup Ninja
-        uses: seanmiddleditch/gha-setup-ninja@master
+      - name: Download Ninja
+        run: |
+          curl -L https://github.com/ninja-build/ninja/releases/download/v1.11.1/ninja-linux.zip -o ninja-linux.zip
+          unzip ninja-linux.zip
+          mv ninja /usr/local/bin
 
       - name: Build GLFW
         working-directory: ${{github.workspace}}/glfw
         run: |
-          cmake -B ${{github.workspace}}/glfw/build -G Ninja -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-          cmake --build ${{github.workspace}}/glfw/build --config ${{env.BUILD_TYPE}}
+          cmake -B ${{github.workspace}}/glfw/build -G Ninja -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -v
+          cmake --build ${{github.workspace}}/glfw/build --config ${{env.BUILD_TYPE}} -v
 
       - name: Configure CMake
-        run: cmake -B ${{github.workspace}}/build -G Ninja -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+        run: cmake -B ${{github.workspace}}/build -G Ninja -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -v
 
       - name: Build
-        run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+        run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} -v
 
       - name: Test
         working-directory: ${{github.workspace}}/build
@@ -57,14 +60,14 @@ jobs:
       - name: Build GLFW
         working-directory: ${{github.workspace}}/glfw
         run: |
-          cmake -B ${{github.workspace}}/glfw/build -G Ninja -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-          cmake --build ${{github.workspace}}/glfw/build --config ${{env.BUILD_TYPE}}
+          cmake -B ${{github.workspace}}/glfw/build -G Ninja -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -v
+          cmake --build ${{github.workspace}}/glfw/build --config ${{env.BUILD_TYPE}} -v
 
       - name: Configure CMake
-        run: cmake -B ${{github.workspace}}/build -G Ninja -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+        run: cmake -B ${{github.workspace}}/build -G Ninja -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} -v
 
       - name: Build
-        run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+        run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}} -v
 
       - name: Test
         working-directory: ${{github.workspace}}/build
