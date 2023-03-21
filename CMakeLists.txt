@@ -43,12 +43,12 @@ target_link_libraries(phy_graphics PRIVATE glfw3)
 
 if (CMAKE_HOST_SYSTEM_NAME MATCHES "Linux")
     #Needs to be tested
-    target_link_libraries(phy_graphics PRIVATE GL)
+    target_link_libraries(phy_graphics PRIVATE GL X11 Xrandr Xinerama Xi Xxf86vm Xcursor pthread dl)
 elseif (CMAKE_HOST_SYSTEM_NAME MATCHES "Darwin")
     target_link_libraries(phy_graphics PRIVATE "-framework OpenGL -framework Cocoa -framework IOkit")
 elseif (CMAKE_HOST_SYSTEM_NAME MATCHES "Windows")
     #Needs to be tested
-    target_link_libraries(phi_graphics PRIVATE opengl32)
+    target_link_libraries(phy_graphics PRIVATE opengl32)
 else ()
     message(WARNING "Unsupported system: ${CMAKE_HOST_SYSTEM_NAME}")
 endif ()
