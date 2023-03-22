@@ -10,9 +10,11 @@ set(SOURCES
         src/window.cpp
         src/Shader.cpp
         src/RenderObject.cpp
-        src/Cube.cpp
         src/menus/Settings.cpp
         src/Triangle.cpp
+
+        src/editor/Editor.cpp
+        src/editor/Tab.cpp
 
         glad/src/glad.c
 
@@ -33,21 +35,21 @@ set(GLAD_DIR ${PROJECT_SOURCE_DIR}/glad)
 
 target_link_directories(phy_graphics PRIVATE ${GLFW_DIR}/build/src)
 
+target_include_directories(phy_graphics PRIVATE ${PROJECT_SOURCE_DIR}/src)
 target_include_directories(phy_graphics PRIVATE ${IMGUI_DIR}/backends)
 target_include_directories(phy_graphics PRIVATE ${IMGUI_DIR})
 target_include_directories(phy_graphics PRIVATE ${GLFW_DIR}/include)
 target_include_directories(phy_graphics PRIVATE ${GLAD_DIR}/include)
 target_include_directories(phy_graphics PRIVATE ${PROJECT_SOURCE_DIR}/src/menus)
+target_include_directories(phy_graphics PRIVATE ${PROJECT_SOURCE_DIR}/src/editor)
 
 target_link_libraries(phy_graphics PRIVATE glfw3)
 
 if (CMAKE_HOST_SYSTEM_NAME MATCHES "Linux")
-    #Needs to be tested
     target_link_libraries(phy_graphics PRIVATE GL X11 Xrandr Xinerama Xi Xxf86vm Xcursor pthread dl)
 elseif (CMAKE_HOST_SYSTEM_NAME MATCHES "Darwin")
     target_link_libraries(phy_graphics PRIVATE "-framework OpenGL -framework Cocoa -framework IOkit")
 elseif (CMAKE_HOST_SYSTEM_NAME MATCHES "Windows")
-    #Needs to be tested
     target_link_libraries(phy_graphics PRIVATE opengl32)
 else ()
     message(WARNING "Unsupported system: ${CMAKE_HOST_SYSTEM_NAME}")

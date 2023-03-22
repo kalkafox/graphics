@@ -40,9 +40,8 @@ void PhyG::Triangle::RenderMenus() {
         glBufferSubData(GL_ARRAY_BUFFER, 3*3*sizeof(GLfloat), sizeof(col2), col2);
         glBufferSubData(GL_ARRAY_BUFFER, 5*3*sizeof(GLfloat), sizeof(col3), col3);
         UnbindVBO();
-
-        ImGui::End();
     }
+    ImGui::End();
 }
 
 void PhyG::Triangle::Render(){

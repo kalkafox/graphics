@@ -1,9 +1,11 @@
 #include "window.h"
 
-static void glfw_error_callback(int error, const char *description) {
-    //fprintf(stderr, "GLFW Error %d: %s\n", error, description);
-    // Use STD instead.
+ void Window::glfw_error_callback(int error, const char *description) {
     std::cerr << "GLFW Error: " << error << ": " << description << std::endl;
+}
+
+void Window::key_callback(GLFWwindow *window, int key, int scancode, int action, int mods){
+
 }
 
 Window::Window() {
@@ -32,6 +34,8 @@ Window::Window() {
 
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);
+
+    glfwSetKeyCallback(window, key_callback);
 
     // Initialize after creating window
     int v = gladLoadGL();
@@ -68,6 +72,7 @@ Window::~Window() {
 
 void Window::run() {
     t = std::make_unique<PhyG::Triangle>("../shaders/base.vert", "../shaders/base.frag");
+    editor = std::make_unique<PhyG::Editor>();
 
     while(!glfwWindowShouldClose(window)){
 
@@ -79,20 +84,18 @@ void Window::run() {
 
         if(ImGui::BeginMainMenuBar()){
             if(ImGui::BeginMenu("Graphics")){
-                ImGui::MenuItem("Settings", NULL, &show_settings);
                 ImGui::MenuItem("Demo Menu", NULL, &show_demo);
+                ImGui::MenuItem("Editor", NULL, &editor->open);
                 ImGui::EndMenu();
             }
             ImGui::EndMainMenuBar();
         }
 
-        if (show_settings){
-            PhyG::Menu::Settings(&show_settings, &clear_color);
+        if(show_demo){
+            ImGui::ShowDemoWindow(&show_demo);
         }
 
-        if(show_demo){
-            ImGui::ShowDemoWindow();
-        }
+        editor->Render();
 
         // Views should be called here
         t->RenderMenus();
