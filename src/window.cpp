@@ -94,8 +94,9 @@ void Window::run() {
         if(show_demo){
             ImGui::ShowDemoWindow(&show_demo);
         }
-
-        editor->Render();
+        if(editor->open){
+            editor->Render();
+        }
 
         // Views should be called here
         t->RenderMenus();

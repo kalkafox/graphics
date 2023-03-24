@@ -6,10 +6,12 @@
 #define GRAPHICS_EDITOR_H
 
 #include "imgui.h"
+#include "tab.h"
 #include "GLFW/glfw3.h"
 #include <filesystem>
 #include <iostream>
 #include <unordered_map>
+#include <vector>
 
 
 namespace PhyG {
@@ -18,17 +20,16 @@ namespace PhyG {
         Editor();
         ~Editor();
         void Render();
-        bool open = true;
-
+        bool open = false;
     private:
-        char text[1024];
         const ImGuiWindowFlags flags =  ImGuiWindowFlags_MenuBar;
 
-        const ImGuiInputTextFlags text_edit_flags = ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AllowTabInput;
+        std::unordered_map<std::string, std::unique_ptr<Tab> > tabs;
 
         bool fe_open = false;
         const ImGuiWindowFlags fe_table_flags = ImGuiTableFlags_RowBg | ImGuiTableFlags_Borders | ImGuiTableFlags_SizingStretchProp | ImGuiTableFlags_ScrollY | ImGuiTableFlags_Sortable | ImGuiTableFlags_Resizable;
         void FileExplorer();
+        void RecurseDrawFiles(std::filesystem::path p);
 
         const char * default_path = "/Users/cee";
     };

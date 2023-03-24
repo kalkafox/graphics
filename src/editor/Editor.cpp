@@ -8,7 +8,7 @@ PhyG::Editor::Editor() {}
 
 PhyG::Editor::~Editor() {}
 
-void RecurseDrawFiles(std::filesystem::path p){
+void PhyG::Editor::RecurseDrawFiles(std::filesystem::path p){
     for (const auto& entry : std::filesystem::directory_iterator(p))
     {
         if(entry.is_directory()){
@@ -25,7 +25,12 @@ void RecurseDrawFiles(std::filesystem::path p){
             ImGui::TableNextRow();
             ImGui::TableSetColumnIndex(0);
 
-            ImGui::Selectable(entry.path().filename().c_str(), &selected.find(entry.path().string())->second);
+            if(ImGui::Selectable(entry.path().filename().c_str(), &selected.find(entry.path().string())->second, ImGuiSelectableFlags_AllowDoubleClick)){
+                if(ImGui::IsMouseDoubleClicked(0)){
+                    tabs.insert( { entry.path() ,std::make_unique<Tab>(entry.path()) } );
+                    fe_open = false;
+                }
+            }
         }
     }
 }
@@ -75,12 +80,38 @@ void PhyG::Editor::Render() {
 
             ImGui::EndMenu();
         }
+
+        if(ImGui::BeginMenu("History")){
+
+            for(const auto &tab: tabs){
+                if(!tab.second->opened){
+                    ImGui::MenuItem(tab.second->GetName().c_str(), NULL, &tab.second->opened);
+                }
+            }
+
+            ImGui::EndMenu();
+        }
+
         ImGui::EndMenuBar();
     }
 
-    // This will eventually be moved into tab view
-    ImVec2 text_size = ImGui::GetContentRegionAvail();
-    ImGui::InputTextMultiline("##code", text, sizeof(text), ImVec2(text_size.x, text_size.y-30), text_edit_flags);
+    static ImGuiTabBarFlags tab_bar_flags = ImGuiTabBarFlags_Reorderable;
+
+    // Passing a bool* to BeginTabItem() is similar to passing one to Begin():
+    // the underlying bool will be set to false when the tab is closed.
+
+    if(!tabs.empty()){
+        if (ImGui::BeginTabBar("MyTabBar", tab_bar_flags))
+        {
+            for(const auto &tab: tabs){
+                tab.second->Render();
+            }
+            ImGui::EndTabBar();
+        }
+        ImGui::Separator();
+    }else{
+        fe_open = true;
+    }
 
     if(fe_open){
         FileExplorer();
