@@ -11,12 +11,12 @@
 #include <filesystem>
 #include <fstream>
 #include <iostream>
+#include "lua.hpp"
 
 namespace PhyG {
-
     class Tab {
     public:
-        Tab(std::filesystem::path p);
+        Tab(std::filesystem::path p, lua_State * L);
         ~Tab();
         void Render();
         bool opened = true;
@@ -24,8 +24,11 @@ namespace PhyG {
     private:
         void LoadTextIn();
         std::filesystem::path path;
+
         char * buffer;
         unsigned int buffer_size = 512000;
+        lua_State * lua;
+
         std::string tab_title;
         const ImGuiInputTextFlags text_edit_flags = ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_AllowTabInput
                 | ImGuiInputTextFlags_CallbackEdit;

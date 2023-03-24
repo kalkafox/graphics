@@ -57,9 +57,15 @@ Window::Window() {
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init(GLSL_VERSION);
     //#############
+
+    // Opening Lua
+    L = luaL_newstate();
+    luaL_openlibs(L);
 }
 
 Window::~Window() {
+    lua_close(L);
+
     // ### IMGUI ###
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
@@ -72,7 +78,7 @@ Window::~Window() {
 
 void Window::run() {
     t = std::make_unique<PhyG::Triangle>("../shaders/base.vert", "../shaders/base.frag");
-    editor = std::make_unique<PhyG::Editor>();
+    editor = std::make_unique<PhyG::Editor>(L);
 
     while(!glfwWindowShouldClose(window)){
 

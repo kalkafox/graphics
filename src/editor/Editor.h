@@ -6,18 +6,18 @@
 #define GRAPHICS_EDITOR_H
 
 #include "imgui.h"
-#include "tab.h"
+#include "Tab.h"
 #include "GLFW/glfw3.h"
 #include <filesystem>
 #include <iostream>
 #include <unordered_map>
 #include <vector>
-
+#include "lua.hpp"
 
 namespace PhyG {
     class Editor{
     public:
-        Editor();
+        Editor(lua_State * L);
         ~Editor();
         void Render();
         bool open = false;
@@ -26,12 +26,14 @@ namespace PhyG {
 
         std::unordered_map<std::string, std::unique_ptr<Tab> > tabs;
 
+        lua_State * lua;
+
         bool fe_open = false;
         const ImGuiWindowFlags fe_table_flags = ImGuiTableFlags_RowBg | ImGuiTableFlags_Borders | ImGuiTableFlags_SizingStretchProp | ImGuiTableFlags_ScrollY | ImGuiTableFlags_Sortable | ImGuiTableFlags_Resizable;
         void FileExplorer();
         void RecurseDrawFiles(std::filesystem::path p);
 
-        const char * default_path = "/Users/cee";
+        const char * default_path = ".";
     };
 }
 

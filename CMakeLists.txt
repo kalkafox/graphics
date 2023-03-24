@@ -32,8 +32,10 @@ add_executable(phy_graphics ${SOURCES})
 set(IMGUI_DIR ${PROJECT_SOURCE_DIR}/imgui)
 set(GLFW_DIR ${PROJECT_SOURCE_DIR}/glfw)
 set(GLAD_DIR ${PROJECT_SOURCE_DIR}/glad)
+set(LUA_DIR ${PROJECT_SOURCE_DIR}/lua)
 
 target_link_directories(phy_graphics PRIVATE ${GLFW_DIR}/build/src)
+target_link_directories(phy_graphics PRIVATE ${LUA_DIR}/src)
 
 target_include_directories(phy_graphics PRIVATE ${PROJECT_SOURCE_DIR}/src)
 target_include_directories(phy_graphics PRIVATE ${IMGUI_DIR}/backends)
@@ -42,8 +44,10 @@ target_include_directories(phy_graphics PRIVATE ${GLFW_DIR}/include)
 target_include_directories(phy_graphics PRIVATE ${GLAD_DIR}/include)
 target_include_directories(phy_graphics PRIVATE ${PROJECT_SOURCE_DIR}/src/menus)
 target_include_directories(phy_graphics PRIVATE ${PROJECT_SOURCE_DIR}/src/editor)
+target_include_directories(phy_graphics PRIVATE ${LUA_DIR}/src)
 
 target_link_libraries(phy_graphics PRIVATE glfw3)
+target_link_libraries(phy_graphics PRIVATE lua)
 
 if (CMAKE_HOST_SYSTEM_NAME MATCHES "Linux")
     target_link_libraries(phy_graphics PRIVATE GL X11 Xrandr Xinerama Xi Xxf86vm Xcursor pthread dl)

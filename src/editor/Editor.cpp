@@ -4,7 +4,9 @@
 
 #include "Editor.h"
 
-PhyG::Editor::Editor() {}
+PhyG::Editor::Editor(lua_State * L) {
+    lua = L;
+}
 
 PhyG::Editor::~Editor() {}
 
@@ -27,7 +29,7 @@ void PhyG::Editor::RecurseDrawFiles(std::filesystem::path p){
 
             if(ImGui::Selectable(entry.path().filename().c_str(), &selected.find(entry.path().string())->second, ImGuiSelectableFlags_AllowDoubleClick)){
                 if(ImGui::IsMouseDoubleClicked(0)){
-                    tabs.insert( { entry.path() ,std::make_unique<Tab>(entry.path()) } );
+                    tabs.insert( { entry.path() ,std::make_unique<Tab>(entry.path(), lua) } );
                     fe_open = false;
                 }
             }
@@ -69,8 +71,7 @@ void PhyG::Editor::Render() {
         return;
     }
 
-    //ImGui::SetNextWindowSize(ImVec2(600, 900));
-    ImGui::Begin("Lua Editor", &open, flags);
+    ImGui::Begin("Editor", &open, flags);
 
     if(ImGui::BeginMenuBar()){
 
